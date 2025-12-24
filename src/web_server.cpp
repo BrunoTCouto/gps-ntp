@@ -6,6 +6,8 @@
 #include "state.h"
 
 static AsyncWebServer server(API_PORT);
+static AsyncWebSocket ws("/ws");
+static unsigned long lastTimeBroadcast = 0;
 
 void webServerSetup()
 {
@@ -69,6 +71,43 @@ void webServerSetup()
             request->send(500, "text/plain", "index.html not found");
         } });
 
+    ws.onEvent([](AsyncWebSocket *serverPtr, AsyncWebSocketClient *client, AwsEventType type, void *arg, uint8_t *data, size_t len)
+               {
+                   if (type == WS_EVT_CONNECT)
+                   {
+                       time_t now = time(nullptr);
+                       if (now > 0)
+                       {
+                           String payload = String("{\"epoch\":") + String((uint32_t)now) + "}";
+                           client->text(payload);
+                       }
+                   }
+                   else if (type == WS_EVT_DISCONNECT)
+                   {
+                       // no-op
+                   } });
+
+    server.addHandler(&ws);
+
     server.begin();
     Serial.println("[WebServer] Started on port " + String(API_PORT));
+}
+
+void webSocketLoop()
+{
+    ws.cleanupClients();
+
+    unsigned long nowMillis = millis();
+    if (nowMillis - lastTimeBroadcast < 1000)
+    {
+        return;
+    }
+    lastTimeBroadcast = nowMillis;
+
+    time_t now = time(nullptr);
+    if (now > 0)
+    {
+        String payload = String("{\"epoch\":") + String((uint32_t)now) + "}";
+        ws.textAll(payload);
+    }
 }

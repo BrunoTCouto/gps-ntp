@@ -31,6 +31,7 @@ void loop()
 {
     gpsLoop();
     ntpLoop();
+    webSocketLoop();
 
     static unsigned long lastPrint = 0;
     if (millis() - lastPrint > API_UPDATE_INTERVAL)

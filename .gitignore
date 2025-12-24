@@ -1,0 +1,39 @@
+# PlatformIO
+.pio/
+.vscode/
+build/
+*.elf
+*.bin
+*.map
+
+# SPIFFS
+data/www/
+*.spiffs.bin
+
+# Node/React
+node_modules/
+dashboard/dist/
+dashboard/node_modules/
+.env
+.env.*
+!.env.example
+data/
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# OS
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# IDE
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Firmware binaries
+*.hex
+*.elf

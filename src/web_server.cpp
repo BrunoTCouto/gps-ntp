@@ -13,6 +13,10 @@ void webServerSetup()
 {
     server.serveStatic("/", SPIFFS, "/").setDefaultFile("index.html");
 
+    // Serve Swagger UI for API documentation
+    server.on("/swagger", HTTP_GET, [](AsyncWebServerRequest *request)
+              { request->send(SPIFFS, "/swagger.html", "text/html"); });
+
     server.on("/api/gps", HTTP_GET, [](AsyncWebServerRequest *request)
               {
         String json = "{";

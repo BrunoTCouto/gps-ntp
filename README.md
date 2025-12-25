@@ -128,6 +128,12 @@ Returns system status:
 }
 ```
 
+## API Docs (Swagger)
+
+- Open interactive docs at `http://<esp32-ip>/swagger`.
+- The OpenAPI spec is served at `http://<esp32-ip>/openapi.json`.
+- Note: The Swagger UI page loads assets from a public CDN. Internet access is required for the UI to render. If you need offline docs, we can bundle the assets into SPIFFS.
+
 ## Access the Dashboard
 
 Once everything is set up:

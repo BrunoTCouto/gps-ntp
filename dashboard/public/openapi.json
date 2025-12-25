@@ -1,0 +1,142 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "GPS NTP Server",
+    "version": "1.0.0",
+    "description": "ESP32-based GPS time server API"
+  },
+  "servers": [
+    { "url": "/" }
+  ],
+  "paths": {
+    "/api/health": {
+      "get": {
+        "summary": "Health check",
+        "tags": ["health"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": { "type": "string" },
+                "example": "OK"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/gps": {
+      "get": {
+        "summary": "Get GPS status",
+        "tags": ["gps"],
+        "responses": {
+          "200": {
+            "description": "GPS status",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/GPSStatus" },
+                "example": {
+                  "locked": true,
+                  "satellites": 8,
+                  "latitude": 40.712776,
+                  "longitude": -74.005974,
+                  "altitude": 10.5,
+                  "lastUpdate": 1234567
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/ntp": {
+      "get": {
+        "summary": "Get NTP status",
+        "tags": ["ntp"],
+        "responses": {
+          "200": {
+            "description": "NTP status",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/NTPStatus" },
+                "example": {
+                  "requests": 1234,
+                  "currentTime": 1735000000,
+                  "synchronized": true
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/status": {
+      "get": {
+        "summary": "Get system status",
+        "tags": ["status"],
+        "responses": {
+          "200": {
+            "description": "System status",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/SystemStatus" },
+                "example": {
+                  "uptime": 3600,
+                  "wifiConnected": true,
+                  "wifiRSSI": -55,
+                  "gpsLocked": true,
+                  "freeMem": 150000,
+                  "localIP": "192.168.1.50"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "GPSStatus": {
+        "type": "object",
+        "properties": {
+          "locked": { "type": "boolean" },
+          "satellites": { "type": "integer" },
+          "latitude": { "type": "number", "format": "float" },
+          "longitude": { "type": "number", "format": "float" },
+          "altitude": { "type": "number", "format": "float" },
+          "lastUpdate": { "type": "integer", "description": "Milliseconds since last GPS update" }
+        },
+        "required": ["locked", "satellites", "latitude", "longitude", "altitude", "lastUpdate"]
+      },
+      "NTPStatus": {
+        "type": "object",
+        "properties": {
+          "requests": { "type": "integer" },
+          "currentTime": { "type": "integer", "description": "Unix epoch seconds" },
+          "synchronized": { "type": "boolean" }
+        },
+        "required": ["requests", "currentTime", "synchronized"]
+      },
+      "SystemStatus": {
+        "type": "object",
+        "properties": {
+          "uptime": { "type": "integer", "description": "Seconds since boot" },
+          "wifiConnected": { "type": "boolean" },
+          "wifiRSSI": { "type": "integer", "description": "Signal strength in dBm" },
+          "gpsLocked": { "type": "boolean" },
+          "freeMem": { "type": "integer", "description": "Free heap in bytes" },
+          "localIP": { "type": "string", "format": "ipv4" }
+        },
+        "required": ["uptime", "wifiConnected", "wifiRSSI", "gpsLocked", "freeMem", "localIP"]
+      }
+    }
+  },
+  "tags": [
+    { "name": "status" },
+    { "name": "gps" },
+    { "name": "ntp" },
+    { "name": "health" }
+  ]
+}

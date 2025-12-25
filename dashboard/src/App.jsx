@@ -178,6 +178,7 @@ function App() {
 
       <div className="footer">
         Data from `{endpoint}` · Live via Socket.IO when available, fallback to periodic REST.
+        <a href="/swagger" target="_blank" rel="noopener noreferrer">API Docs (Swagger)</a>
       </div>
     </div>
   )

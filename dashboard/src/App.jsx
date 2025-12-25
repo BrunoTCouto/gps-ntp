@@ -121,7 +121,7 @@ function App() {
           <div className="value glow">{timeString}</div>
           <div className="muted">{formatDate(liveTime)}</div>
           <div className="status-row">
-            <span className="pill">Source: {gps?.gpsLocked ? 'GPS' : 'Syncing...'}</span>
+            <span className="pill">Source: {gps?.locked ? 'GPS' : 'Syncing...'}</span>
             <span className="pill">Socket: {socketState}</span>
           </div>
         </div>
@@ -142,7 +142,6 @@ function App() {
           <div className="muted">RSSI: {rssi}</div>
           <div className="status-row">
             <span className="pill">IP: {status?.localIP ?? '—'}</span>
-            <span className="pill">Gateway: {status?.gateway ?? '—'}</span>
           </div>
         </div>
 
@@ -160,16 +159,11 @@ function App() {
           <h3>System Health</h3>
           <div className="value">{status?.freeMem ? `${Math.round(status.freeMem / 1024)} KB` : '—'}</div>
           <div className="muted">Uptime: {uptime}</div>
-          <div className="sparkline" aria-hidden />
         </div>
 
         <div className="card">
           <h3>Recent Metrics</h3>
           <div className="list">
-            <div className="list-item">
-              <span className="muted">Last GPS update</span>
-              <span>{gps?.lastUpdate ? `${gps.lastUpdate}s` : '—'}</span>
-            </div>
             <div className="list-item">
               <span className="muted">Altitude</span>
               <span>{gps?.altitude ? `${gps.altitude.toFixed?.(1)} m` : '—'}</span>
